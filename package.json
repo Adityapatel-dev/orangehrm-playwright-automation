@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Adityapatel-dev/orangehrm-playwright-automation#readme",
   "devDependencies": {
     "@playwright/test": "^1.62.1",
-    "@types/node": "^26.2.0"
+    "@types/node": "^26.2.0",
+    "typescript": "^7.0.2"
   }
 }
