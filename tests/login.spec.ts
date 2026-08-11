@@ -1,15 +1,16 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/web/index.php/auth/login');
+});
 
 test(
   'User can login with valid credentials @smoke @functional',
   async ({ page }) => {
-    await page.goto('/');
+    const loginPage = new LoginPage(page);
 
-    await page.getByPlaceholder('Username').fill('Admin');
-
-    await page.getByPlaceholder('Password').fill('admin123');
-
-    await page.getByRole('button', { name: 'Login' }).click();
+    await loginPage.login('Admin', 'admin123');
 
     await expect(page).toHaveURL(/dashboard/);
   }
@@ -18,13 +19,9 @@ test(
 test(
   'User cannot login with invalid password @negative @functional',
   async ({ page }) => {
-    await page.goto('/');
+    const loginPage = new LoginPage(page);
 
-    await page.getByPlaceholder('Username').fill('Admin');
-
-    await page.getByPlaceholder('Password').fill('wrongPassword');
-
-    await page.getByRole('button', { name: 'Login' }).click();
+    await loginPage.login('Admin', 'wrongPassword');
 
     await expect(page.getByText('Invalid credentials')).toBeVisible();
   }

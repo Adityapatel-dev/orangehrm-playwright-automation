@@ -15,6 +15,7 @@ export default defineConfig({
 
   use: {
     baseURL: 'https://opensource-demo.orangehrmlive.com/',
+     navigationTimeout: 60_000,
     trace: 'on-first-retry',
   },
 
