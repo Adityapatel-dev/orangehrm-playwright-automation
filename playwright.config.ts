@@ -1,4 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default defineConfig({
   testDir: './tests',
@@ -14,7 +17,7 @@ export default defineConfig({
   reporter: 'html',
 
   use: {
-    baseURL: 'https://opensource-demo.orangehrmlive.com',
+    baseURL: process.env.BASE_URL,
     navigationTimeout: 60_000,
     trace: 'on-first-retry',
   },

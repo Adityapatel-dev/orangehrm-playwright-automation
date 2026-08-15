@@ -5,12 +5,12 @@ export interface LoginCredentials {
 
 export const loginData = {
   validUser: {
-    username: 'Admin',
-    password: 'admin123',
+    username: process.env.TEST_USERNAME ?? '',
+    password: process.env.TEST_PASSWORD ?? '',
   } satisfies LoginCredentials,
 
   invalidPassword: {
-    username: 'Admin',
+    username: process.env.TEST_USERNAME ?? '',
     password: 'wrongPassword',
   } satisfies LoginCredentials,
 };
