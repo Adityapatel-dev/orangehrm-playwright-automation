@@ -2,7 +2,8 @@ import { test as base, expect, Page } from '@playwright/test';
 
 import { LoginPage } from '../pages/LoginPage';
 import { DashboardPage } from '../pages/DashboardPage';
-import { loginData } from '../data/loginData';
+import { loginData } from '../data/LoginData';
+
 
 type TestFixtures = {
   loginPage: LoginPage;

@@ -1,8 +1,12 @@
 import { test, expect } from '../fixtures/test.fixture';
 import { loginData } from '../data/LoginData';
 
+test.use({
+  storageState: { cookies: [], origins: [] },
+});
 
 test.setTimeout(60_000);
+
 
 test(
   'User can logout successfully @smoke @functional',
