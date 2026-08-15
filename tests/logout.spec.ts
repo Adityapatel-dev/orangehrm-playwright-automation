@@ -1,4 +1,6 @@
 import { test, expect } from '../fixtures/test.fixture';
+import { loginData } from '../data/LoginData';
+
 
 test.setTimeout(60_000);
 
@@ -15,7 +17,10 @@ test(
       timeout: 30_000,
     });
 
-    await loginPage.login('Admin', 'admin123');
+    await loginPage.login(
+      loginData.validUser.username,
+      loginData.validUser.password
+    );
 
     await expect(page).toHaveURL(/dashboard/);
 
