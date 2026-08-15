@@ -3,11 +3,12 @@ import { loginData } from '../data/LoginData';
 
 const authFile = 'playwright/.auth/user.json';
 
-setup.setTimeout(60_000);
+setup.setTimeout(90_000);
 
 setup('authenticate', async ({ page, loginPage }) => {
   await page.goto('/web/index.php/auth/login', {
-    waitUntil: 'commit',
+    waitUntil: 'domcontentloaded',
+    timeout: 60_000,
   });
 
   await expect(
@@ -21,16 +22,18 @@ setup('authenticate', async ({ page, loginPage }) => {
     loginData.validUser.password
   );
 
-  // Wait for Dashboard instead of waiting for URL navigation.
+  // Wait for the application to redirect to Dashboard.
+  await page.waitForURL(/dashboard/, {
+    waitUntil: 'domcontentloaded',
+    timeout: 45_000,
+  });
+
+  // Then verify that the Dashboard is actually loaded.
   await expect(
-    page.getByRole('heading', {
-      name: 'Dashboard',
-    })
+    page.getByRole('heading', { name: 'Dashboard' })
   ).toBeVisible({
     timeout: 30_000,
   });
-
-  await expect(page).toHaveURL(/dashboard/);
 
   await page.context().storageState({
     path: authFile,

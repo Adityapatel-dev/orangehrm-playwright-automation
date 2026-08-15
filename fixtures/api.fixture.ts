@@ -1,7 +1,9 @@
 import { test as base, expect } from '@playwright/test';
+import { ApiClient } from '../utils/ApiClient';
 
 type ApiFixtures = {
   apiBaseUrl: string;
+  apiClient: ApiClient;
 };
 
 export const test = base.extend<ApiFixtures>({
@@ -11,6 +13,12 @@ export const test = base.extend<ApiFixtures>({
     }
 
     await use(baseURL);
+  },
+
+  apiClient: async ({ request }, use) => {
+    const apiClient = new ApiClient(request);
+
+    await use(apiClient);
   },
 });
 

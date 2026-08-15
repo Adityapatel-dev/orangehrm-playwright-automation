@@ -3,8 +3,8 @@ import { apiData } from '../../data/apiData';
 
 test(
   'OrangeHRM API endpoint is reachable @api @smoke',
-  async ({ request, apiBaseUrl }) => {
-    const response = await request.get(
+  async ({ apiClient, apiBaseUrl }) => {
+    const response = await apiClient.get(
       `${apiBaseUrl}${apiData.endpoints.dashboardShortcuts}`
     );
 
