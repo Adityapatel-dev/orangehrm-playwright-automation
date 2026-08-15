@@ -1,24 +1,22 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import { DashboardPage } from '../pages/DashboardPage';
+import { test, expect } from '../fixtures/test.fixture';
 
 test.setTimeout(60_000);
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/web/index.php/auth/login', {
-    waitUntil: 'domcontentloaded',
+    waitUntil: 'commit',
   });
 
-  await expect(page.locator('input[name="username"]')).toBeVisible({
+  await expect(
+    page.locator('input[name="username"]')
+  ).toBeVisible({
     timeout: 30_000,
   });
 });
 
 test(
   'User can login with valid credentials @smoke @functional',
-  async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
+  async ({ page, loginPage }) => {
     await loginPage.login('Admin', 'admin123');
 
     await expect(page).toHaveURL(/dashboard/);
@@ -27,9 +25,7 @@ test(
 
 test(
   'User cannot login with invalid password @negative @functional',
-  async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
+  async ({ page, loginPage }) => {
     await loginPage.login('Admin', 'wrongPassword');
 
     await expect(page).not.toHaveURL(/dashboard/);

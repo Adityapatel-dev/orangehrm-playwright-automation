@@ -22,6 +22,7 @@ export class HeaderComponent {
 
   async logout(): Promise<void> {
     await this.openProfileMenu();
+
     await this.logoutLink.click();
   }
 }
