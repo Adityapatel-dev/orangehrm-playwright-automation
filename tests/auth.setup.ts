@@ -22,17 +22,18 @@ setup('authenticate', async ({ page, loginPage }) => {
     loginData.validUser.password
   );
 
-  // Wait for the application to redirect to Dashboard.
-  await page.waitForURL(/dashboard/, {
-    waitUntil: 'domcontentloaded',
-    timeout: 45_000,
-  });
-
-  // Then verify that the Dashboard is actually loaded.
+  // Wait for the actual application state instead of URL navigation.
   await expect(
-    page.getByRole('heading', { name: 'Dashboard' })
+    page.getByRole('heading', {
+      name: 'Dashboard',
+    })
   ).toBeVisible({
     timeout: 30_000,
+  });
+
+  // Optional URL verification after Dashboard is loaded.
+  await expect(page).toHaveURL(/dashboard/, {
+    timeout: 10_000,
   });
 
   await page.context().storageState({
