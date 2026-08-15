@@ -8,22 +8,28 @@ test(
       `${apiBaseUrl}${apiData.endpoints.dashboardShortcuts}`
     );
 
-    // 1. Status code
     expect(response.status()).toBe(200);
-
-    // 2. Response should be successful
     expect(response.ok()).toBeTruthy();
 
-    // 3. Content-Type
     expect(response.headers()['content-type']).toContain(
       'application/json'
     );
 
-    // 4. Response body
     const responseBody = await response.json();
 
-    console.log('Response:', responseBody);
-
     expect(responseBody).toBeDefined();
+  }
+);
+
+test(
+  'Invalid API endpoint returns 404 @api @negative',
+  async ({ apiClient, apiBaseUrl }) => {
+    const response = await apiClient.get(
+      `${apiBaseUrl}/web/index.php/api/v2/invalid-endpoint`
+    );
+
+    console.log('Status:', response.status());
+
+    expect(response.status()).toBe(404);
   }
 );
