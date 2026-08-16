@@ -11,13 +11,29 @@ type ApiFixtures = {
 
 export const test = base.extend<ApiFixtures>({
   apiBaseUrl: async ({}, use) => {
-    await use('https://opensource-demo.orangehrmlive.com');
+    const apiBaseUrl = process.env.API_BASE_URL;
+
+    if (!apiBaseUrl) {
+      throw new Error(
+        'API_BASE_URL is not defined in .env'
+      );
+    }
+
+    await use(apiBaseUrl);
   },
 
   apiClient: async ({ playwright }, use) => {
+    const apiBaseUrl = process.env.API_BASE_URL;
+
+    if (!apiBaseUrl) {
+      throw new Error(
+        'API_BASE_URL is not defined in .env'
+      );
+    }
+
     const requestContext =
       await playwright.request.newContext({
-        baseURL: 'https://opensource-demo.orangehrmlive.com',
+        baseURL: apiBaseUrl,
         storageState: 'playwright/.auth/user.json',
         extraHTTPHeaders: {
           Accept: 'application/json',
