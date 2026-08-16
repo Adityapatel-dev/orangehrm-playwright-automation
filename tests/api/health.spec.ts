@@ -8,8 +8,6 @@ test(
       `${apiBaseUrl}${apiData.endpoints.dashboardShortcuts}`
     );
 
-    console.log('Status:', response.status());
-
     expect(response.status()).toBe(200);
     expect(response.ok()).toBeTruthy();
 
@@ -19,7 +17,13 @@ test(
 
     const responseBody = await response.json();
 
+    console.log(
+      'Dashboard shortcuts response:',
+      JSON.stringify(responseBody, null, 2)
+    );
+
     expect(responseBody).toBeDefined();
+    expect(responseBody).toHaveProperty('data');
   }
 );
 
@@ -29,8 +33,6 @@ test(
     const response = await apiClient.get(
       `${apiBaseUrl}/web/index.php/api/v2/invalid-endpoint`
     );
-
-    console.log('Status:', response.status());
 
     expect(response.status()).toBe(404);
   }
