@@ -1,4 +1,5 @@
 import { test, expect } from '../../fixtures/api.fixture';
+import { apiData } from '../../data/apiData';
 
 test(
   'API request chaining with authenticated client @api @chaining',
@@ -9,24 +10,16 @@ test(
       lastName: `User${Date.now()}`,
     };
 
-    // API 1: Create employee
     const createResponse = await apiClient.post(
-      `${apiBaseUrl}/web/index.php/api/v2/pim/employees`,
+      `${apiBaseUrl}${apiData.endpoints.employees}`,
       {
         data: employee,
       }
     );
 
-    console.log(
-      'Create employee status:',
-      createResponse.status()
-    );
-
     expect(createResponse.ok()).toBeTruthy();
 
     const createBody = await createResponse.json();
-
-    expect(createBody).toBeDefined();
 
     const employeeId = createBody.data?.empNumber;
 
@@ -34,14 +27,8 @@ test(
 
     console.log('Created employee ID:', employeeId);
 
-    // API 2: Get employee using ID from API 1
     const getResponse = await apiClient.get(
-      `${apiBaseUrl}/web/index.php/api/v2/pim/employees/${employeeId}`
-    );
-
-    console.log(
-      'Get employee status:',
-      getResponse.status()
+      `${apiBaseUrl}${apiData.endpoints.employees}/${employeeId}`
     );
 
     expect(getResponse.ok()).toBeTruthy();
@@ -49,7 +36,5 @@ test(
     const employeeBody = await getResponse.json();
 
     expect(employeeBody).toBeDefined();
-
-    console.log('Retrieved employee:', employeeBody);
   }
 );

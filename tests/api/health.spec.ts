@@ -17,13 +17,13 @@ test(
 
     const responseBody = await response.json();
 
+    expect(responseBody).toBeDefined();
+    expect(responseBody).toHaveProperty('data');
+
     console.log(
       'Dashboard shortcuts response:',
       JSON.stringify(responseBody, null, 2)
     );
-
-    expect(responseBody).toBeDefined();
-    expect(responseBody).toHaveProperty('data');
   }
 );
 
@@ -31,7 +31,7 @@ test(
   'Invalid API endpoint returns 404 @api @negative',
   async ({ apiClient, apiBaseUrl }) => {
     const response = await apiClient.get(
-      `${apiBaseUrl}/web/index.php/api/v2/invalid-endpoint`
+      `${apiBaseUrl}${apiData.endpoints.invalidEndpoint}`
     );
 
     expect(response.status()).toBe(404);

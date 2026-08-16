@@ -1,10 +1,11 @@
 import { test, expect } from '../../fixtures/api.fixture';
+import { apiData } from '../../data/apiData';
 
 test(
   'Invalid API endpoint returns 404 @api @negative',
   async ({ apiClient, apiBaseUrl }) => {
     const response = await apiClient.get(
-      `${apiBaseUrl}/web/index.php/api/v2/does-not-exist`
+      `${apiBaseUrl}${apiData.endpoints.invalidEndpoint}`
     );
 
     expect(response.status()).toBe(404);
@@ -20,7 +21,7 @@ test(
       });
 
     const response = await unauthenticatedClient.get(
-      '/web/index.php/api/v2/dashboard/shortcuts'
+      apiData.endpoints.dashboardShortcuts
     );
 
     console.log(
