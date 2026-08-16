@@ -18,9 +18,9 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: 'https://opensource-demo.orangehrmlive.com',
+    baseURL: process.env.BASE_URL,
 
-    // Normal tests use the authenticated session.
+    // Normal UI tests use the authenticated session
     storageState: 'playwright/.auth/user.json',
 
     navigationTimeout: 60_000,
@@ -35,67 +35,113 @@ export default defineConfig({
   },
 
   projects: [
-  {
-    name: 'setup',
+    // ==========================================
+    // 1. AUTHENTICATION SETUP
+    // ==========================================
+    {
+      name: 'setup',
 
-    testMatch: /.*\.setup\.ts/,
+      testMatch: /.*\.setup\.ts/,
 
-    use: {
-      storageState: {
-        cookies: [],
-        origins: [],
+      // Setup MUST start logged out
+      use: {
+        storageState: {
+          cookies: [],
+          origins: [],
+        },
       },
     },
-  },
 
-  {
-    name: 'chromium',
+    // ==========================================
+    // 2. CHROMIUM
+    // ==========================================
+    {
+      name: 'chromium',
 
-    testMatch: /.*\.spec\.ts/,
+      testMatch: /.*\.spec\.ts/,
 
-    use: {
-      ...devices['Desktop Chrome'],
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+
+      dependencies: ['setup'],
     },
 
-    dependencies: ['setup'],
-  },
+    // ==========================================
+    // 3. FIREFOX
+    // ==========================================
+    {
+      name: 'firefox',
 
-  {
-    name: 'firefox',
+      testMatch: /.*\.spec\.ts/,
 
-    testMatch: /.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Firefox'],
+      },
 
-    use: {
-      ...devices['Desktop Firefox'],
+      dependencies: ['setup'],
     },
 
-    dependencies: ['setup'],
-  },
+    // ==========================================
+    // 4. WEBKIT
+    // ==========================================
+    {
+      name: 'webkit',
 
-  {
-    name: 'webkit',
+      testMatch: /.*\.spec\.ts/,
 
-    testMatch: /.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Safari'],
+      },
 
-    use: {
-      ...devices['Desktop Safari'],
+      dependencies: ['setup'],
     },
 
-    dependencies: ['setup'],
-  },
+    // ==========================================
+    // 5. SMOKE
+    // ==========================================
+    {
+      name: 'smoke',
 
-  {
-    name: 'smoke',
+      testMatch: /.*\.spec\.ts/,
 
-    testMatch: /.*\.spec\.ts/,
+      grep: /@smoke/,
 
-    grep: /@smoke/,
+      use: {
+        ...devices['Desktop Chrome'],
+      },
 
-    use: {
-      ...devices['Desktop Chrome'],
+      dependencies: ['setup'],
     },
 
-    dependencies: ['setup'],
-  },
-],
+    // ==========================================
+    // 6. REGRESSION
+    // ==========================================
+    {
+      name: 'regression',
+
+      testMatch: /.*\.spec\.ts/,
+
+      grep: /@functional/,
+
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+
+      dependencies: ['setup'],
+    },
+
+    // ==========================================
+    // 7. API
+    // ==========================================
+    {
+      name: 'api',
+
+      testMatch: /api\/.*\.spec\.ts/,
+
+      use: {
+        baseURL: process.env.API_BASE_URL,
+      },
+    },
+  ],
 });
