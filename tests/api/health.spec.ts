@@ -8,12 +8,14 @@ test(
       `${apiBaseUrl}${apiData.endpoints.dashboardShortcuts}`
     );
 
+    console.log('Status:', response.status());
+
     expect(response.status()).toBe(200);
     expect(response.ok()).toBeTruthy();
 
-    expect(response.headers()['content-type']).toContain(
-      'application/json'
-    );
+    expect(
+      response.headers()['content-type']
+    ).toContain('application/json');
 
     const responseBody = await response.json();
 

@@ -1,24 +1,32 @@
-import { test as base, expect } from '@playwright/test';
-import { ApiClient } from '../utils/ApiClient';
+import {
+  test as base,
+  expect,
+  APIRequestContext,
+} from '@playwright/test';
 
 type ApiFixtures = {
+  apiClient: APIRequestContext;
   apiBaseUrl: string;
-  apiClient: ApiClient;
 };
 
 export const test = base.extend<ApiFixtures>({
-  apiBaseUrl: async ({ baseURL }, use) => {
-    if (!baseURL) {
-      throw new Error('BASE_URL is not configured.');
-    }
-
-    await use(baseURL);
+  apiBaseUrl: async ({}, use) => {
+    await use('https://opensource-demo.orangehrmlive.com');
   },
 
-  apiClient: async ({ request }, use) => {
-    const apiClient = new ApiClient(request);
+  apiClient: async ({ playwright }, use) => {
+    const requestContext =
+      await playwright.request.newContext({
+        baseURL: 'https://opensource-demo.orangehrmlive.com',
+        storageState: 'playwright/.auth/user.json',
+        extraHTTPHeaders: {
+          Accept: 'application/json',
+        },
+      });
 
-    await use(apiClient);
+    await use(requestContext);
+
+    await requestContext.dispose();
   },
 });
 
