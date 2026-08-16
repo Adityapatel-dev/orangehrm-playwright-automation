@@ -1,7 +1,5 @@
+import 'dotenv/config';
 import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 export default defineConfig({
   testDir: './tests',
@@ -14,44 +12,79 @@ export default defineConfig({
 
   workers: process.env.CI ? 1 : undefined,
 
-  reporter: 'html',
+  reporter: [
+    ['html'],
+    ['./reporters/CustomReporter.ts'],
+  ],
 
   use: {
-    baseURL: process.env.BASE_URL,
+    baseURL: 'https://opensource-demo.orangehrmlive.com',
+
+    // Normal tests use the authenticated session.
+    storageState: 'playwright/.auth/user.json',
+
     navigationTimeout: 60_000,
+
+    actionTimeout: 30_000,
+
     trace: 'on-first-retry',
+
+    screenshot: 'only-on-failure',
+
+    video: 'retain-on-failure',
   },
 
   projects: [
+    // Authentication setup MUST start logged out.
     {
       name: 'setup',
-      testMatch: /auth\.setup\.ts/,
+
+      testMatch: /.*\.setup\.ts/,
+
+      use: {
+        storageState: {
+          cookies: [],
+          origins: [],
+        },
+      },
     },
 
+    // Chromium tests use the authenticated storage state.
     {
       name: 'chromium',
+
+      testMatch: /.*\.spec\.ts/,
+
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'playwright/.auth/user.json',
       },
+
       dependencies: ['setup'],
     },
 
+    // Firefox tests use the authenticated storage state.
     {
       name: 'firefox',
+
+      testMatch: /.*\.spec\.ts/,
+
       use: {
         ...devices['Desktop Firefox'],
-        storageState: 'playwright/.auth/user.json',
       },
+
       dependencies: ['setup'],
     },
 
+    // WebKit tests use the authenticated storage state.
     {
       name: 'webkit',
+
+      testMatch: /.*\.spec\.ts/,
+
       use: {
         ...devices['Desktop Safari'],
-        storageState: 'playwright/.auth/user.json',
       },
+
       dependencies: ['setup'],
     },
   ],
