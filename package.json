@@ -1,15 +1,32 @@
 {
   "name": "orangehrm-playwright-automation",
   "version": "1.0.0",
-  "description": "",
+  "description": "Playwright and TypeScript automation framework for OrangeHRM",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --project=smoke",
+    "test:regression": "playwright test --project=regression",
+    "test:api": "playwright test --project=api",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "typecheck": "tsc --noEmit",
+    "report": "playwright show-report"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Adityapatel-dev/orangehrm-playwright-automation.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "playwright",
+    "typescript",
+    "automation",
+    "api-testing",
+    "qa",
+    "sdet"
+  ],
+  "author": "Aditya Patel",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {

@@ -18,21 +18,20 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: process.env.BASE_URL,
+  baseURL: process.env.BASE_URL,
 
-    // Normal UI tests use the authenticated session
-    storageState: 'playwright/.auth/user.json',
+  storageState: 'playwright/.auth/user.json',
 
-    navigationTimeout: 60_000,
+  navigationTimeout: 60_000,
 
-    actionTimeout: 30_000,
+  actionTimeout: 30_000,
 
-    trace: 'on-first-retry',
+  trace: 'on-first-retry',
 
-    screenshot: 'only-on-failure',
+  screenshot: 'only-on-failure',
 
-    video: 'retain-on-failure',
-  },
+  video: 'retain-on-failure',
+},
 
   projects: [
     // ==========================================
