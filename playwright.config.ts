@@ -35,57 +35,67 @@ export default defineConfig({
   },
 
   projects: [
-    // Authentication setup MUST start logged out.
-    {
-      name: 'setup',
+  {
+    name: 'setup',
 
-      testMatch: /.*\.setup\.ts/,
+    testMatch: /.*\.setup\.ts/,
 
-      use: {
-        storageState: {
-          cookies: [],
-          origins: [],
-        },
+    use: {
+      storageState: {
+        cookies: [],
+        origins: [],
       },
     },
+  },
 
-    // Chromium tests use the authenticated storage state.
-    {
-      name: 'chromium',
+  {
+    name: 'chromium',
 
-      testMatch: /.*\.spec\.ts/,
+    testMatch: /.*\.spec\.ts/,
 
-      use: {
-        ...devices['Desktop Chrome'],
-      },
-
-      dependencies: ['setup'],
+    use: {
+      ...devices['Desktop Chrome'],
     },
 
-    // Firefox tests use the authenticated storage state.
-    {
-      name: 'firefox',
+    dependencies: ['setup'],
+  },
 
-      testMatch: /.*\.spec\.ts/,
+  {
+    name: 'firefox',
 
-      use: {
-        ...devices['Desktop Firefox'],
-      },
+    testMatch: /.*\.spec\.ts/,
 
-      dependencies: ['setup'],
+    use: {
+      ...devices['Desktop Firefox'],
     },
 
-    // WebKit tests use the authenticated storage state.
-    {
-      name: 'webkit',
+    dependencies: ['setup'],
+  },
 
-      testMatch: /.*\.spec\.ts/,
+  {
+    name: 'webkit',
 
-      use: {
-        ...devices['Desktop Safari'],
-      },
+    testMatch: /.*\.spec\.ts/,
 
-      dependencies: ['setup'],
+    use: {
+      ...devices['Desktop Safari'],
     },
-  ],
+
+    dependencies: ['setup'],
+  },
+
+  {
+    name: 'smoke',
+
+    testMatch: /.*\.spec\.ts/,
+
+    grep: /@smoke/,
+
+    use: {
+      ...devices['Desktop Chrome'],
+    },
+
+    dependencies: ['setup'],
+  },
+],
 });
