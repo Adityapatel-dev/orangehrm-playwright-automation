@@ -136,5 +136,3 @@ GitHub:
 
 Project:
 [https://github.com/Adityapatel-dev/orangehrm-playwright-automation](https://github.com/Adityapatel-dev/orangehrm-playwright-automation)
-
-```
